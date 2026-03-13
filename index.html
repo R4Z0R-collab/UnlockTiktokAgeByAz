@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>System Security Scan</title>
+
+<style>
+body{
+background:black;
+color:#00ff00;
+font-family:Courier New, monospace;
+text-align:center;
+padding-top:30px;
+}
+
+#terminal{
+width:70%;
+margin:auto;
+text-align:left;
+min-height:200px;
+}
+
+#progress{
+width:60%;
+background:#222;
+margin:20px auto;
+}
+
+#bar{
+width:0%;
+height:25px;
+background:#00ff00;
+}
+
+input,button{
+padding:10px;
+margin-top:10px;
+}
+</style>
+
+</head>
+<body>
+
+<h2>System Security Scanner</h2>
+
+<div id="terminal"></div>
+
+<div id="progress">
+<div id="bar"></div>
+</div>
+
+<p id="timer">50 detik</p>
+
+<div id="login" style="display:none;">
+<input type="password" id="pw" placeholder="Masukkan password">
+<br>
+<button onclick="cek()">Submit</button>
+</div>
+
+<script>
+
+const lines = [
+"Menghubungkan ke server...",
+"Akses diberikan ✔",
+"Memverifikasi sistem keamanan...",
+"Memindai data akun...",
+"Memeriksa pesan pribadi...",
+"Mengambil informasi profil...",
+"Mengunduh data akun...",
+"Menembus firewall...",
+"Mengambil kontrol akun..."
+];
+
+let i = 0;
+const terminal = document.getElementById("terminal");
+
+function typeLine(){
+if(i < lines.length){
+terminal.innerHTML += lines[i] + "<br>";
+i++;
+setTimeout(typeLine,1500);
+}
+}
+
+typeLine();
+
+let time = 50;
+let bar = document.getElementById("bar");
+
+let interval = setInterval(()=>{
+
+time--;
+
+document.getElementById("timer").innerText = time + " detik";
+
+bar.style.width = (50-time)*2 + "%";
+
+if(time <= 0){
+clearInterval(interval);
+document.getElementById("timer").innerText="Scan selesai";
+document.getElementById("login").style.display="block";
+}
+
+},1000);
+
+function cek(){
+
+let pw = document.getElementById("pw").value;
+
+if(pw === "6767"){
+document.body.innerHTML = `
+<h1 style="color:red">⚠ AKUN ANDA TELAH DIAMBIL OLEH AZKA ⚠</h1>
+<h2>Tunggu...</h2>
+<h1 style="color:yellow">ANDA KENA PRANK WKWKWK 😆</h1>
+`;
+}else{
+alert("Password salah!");
+}
+
+}
+
+</script>
+
+</body>
+</html>
