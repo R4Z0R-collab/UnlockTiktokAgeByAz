@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>System Security Scan</title>
+
+<style>
+body{
+margin:0;
+background:black;
+color:#00ff00;
+font-family:Courier New, monospace;
+overflow:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:0;
+}
+
+#terminal{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+padding:25px;
+z-index:1;
+font-size:17px;
+}
+
+#progressBox{
+width:40%;
+height:25px;
+border:1px solid #00ff00;
+margin-top:20px;
+}
+
+#bar{
+height:100%;
+width:0%;
+background:#00ff00;
+}
+
+#percent{
+margin-top:5px;
+}
+
+#login{
+display:none;
+margin-top:20px;
+}
+
+input,button{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:8px;
+}
+
+.red{
+color:red;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+50%{opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div id="terminal">
+
+<div id="logs"></div>
+
+<div id="progressBox">
+<div id="bar"></div>
+</div>
+
+<div id="percent">0%</div>
+
+<div id="login">
+<input type="password" id="pw" placeholder="Masukkan password">
+<button onclick="cek()">Submit</button>
+</div>
+
+</div>
+
+<script>
+
+/* MATRIX RAIN */
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+
+const drops=[];
+
+for(let x=0;x<columns;x++) drops[x]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#0f0";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+let text=letters[Math.floor(Math.random()*letters.length)];
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,33);
+
+
+/* TERMINAL LOG */
+
+const lines=[
+
+"Connecting to secure network...",
+"Scanning IP range 192.168.1.0/24 ...",
+"IP Found: 192.168.1.12",
+"IP Found: 192.168.1.27",
+"IP Found: 192.168.1.54",
+"Scanning open ports...",
+"Port 22 OPEN",
+"Port 80 OPEN",
+"Port 443 OPEN",
+"Accessing server...",
+"Downloading account data...",
+"Reading private messages...",
+"Processing system..."
+
+];
+
+let i=0;
+
+function addLog(){
+
+if(i < lines.length){
+
+document.getElementById("logs").innerHTML += lines[i] + "<br>";
+
+i++;
+
+setTimeout(addLog,1200);
+
+}
+
+}
+
+addLog();
+
+
+/* SCAN PROGRESS */
+
+let percent=0;
+
+let bar=document.getElementById("bar");
+
+let scan=setInterval(()=>{
+
+percent++;
+
+bar.style.width = percent + "%";
+
+document.getElementById("percent").innerText = percent + "%";
+
+if(percent>=100){
+
+clearInterval(scan);
+
+document.getElementById("login").style.display="block";
+
+}
+
+},120);
+
+
+/* PASSWORD */
+
+function cek(){
+
+let pw=document.getElementById("pw").value;
+
+if(pw==="6767"){
+
+document.body.innerHTML=`
+
+<div style="background:black;color:#00ff00;height:100vh;font-family:Courier New;padding:40px;">
+
+<h1 class="red">⚠ AKUN TELAH DIAMBIL AZKA ⚠</h1>
+
+<h2>Tunggu...</h2>
+
+<div id="newlogs"></div>
+
+</div>
+
+`;
+
+const log2=[
+
+"Login baru terdeteksi...",
+"IP address ditemukan...",
+"Mengakses akun...",
+"Mengambil data...",
+"Akun Anda telah Diambil",
+"Nanti lihat saja... kayak ada yang login..."
+
+];
+
+let x=0;
+
+function add2(){
+
+if(x < log2.length){
+
+document.getElementById("newlogs").innerHTML += log2[x] + "<br>";
+
+x++;
+
+setTimeout(add2,1200);
+
+}
+
+}
+
+add2();
+
+}else{
+
+alert("Password salah");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
